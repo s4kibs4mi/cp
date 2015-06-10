@@ -2,53 +2,51 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <math.h>
+#include <cctype>
+#include <set>
 #include <string>
-#include <vector>
-#include <map>
-#include <stack>
 #include <queue>
+#include <stack>
 #include <list>
 
 using namespace std;
 
-list<int> *graph;
+vector<int> graph[1000];
 
-void BFS(int n,int s){
-    vector<bool> visited;
-    for(int i = 0; i < n; i++)
-        visited.push_back(false);
-
-    visited[s] = true;
-
+void BFS(int startNode, int nodes){
     queue<int> q;
-    q.push(s);
-
-    list<int> :: iterator it;
-    while(!q.empty()){
+    bool visited[nodes];
+    memset(visited, false, sizeof(visited));
+    
+    q.push(startNode);
+    visited[startNode] = true;
+    
+    while (!q.empty()) {
         int x = q.front();
-        cout << x; // track bfs
         q.pop();
-
-        for(it = graph[x].begin(); it != graph[x].end(); it++){
-            if(!visited[*it]){
-                visited[*it] = true;
-                q.push(*it);
+        
+        cout << x << " > ";
+        
+        for (int i = 0; i < graph[x].size(); i++) {
+            if(!visited[graph[x][i]]){
+                visited[graph[x][i]] = true;
+                q.push(graph[x][i]);
             }
         }
     }
+    cout << endl;
 }
 
 int main(){
     int nodes, edges, u, v;
     cin >> nodes >> edges;
-    graph = new list<int>[nodes];
-
-    for(int i = 0; i < edges; i++){
+    
+    for (int i = 0; i < edges; i++) {
         cin >> u >> v;
         graph[u].push_back(v);
     }
-
-    BFS(nodes, 2);
-
+    
+    BFS(2, nodes);
     return 0;
 }
